@@ -9,14 +9,14 @@ declare var Enumerable: any;
 
 
 @Component({
-  selector: 'stat',
-  templateUrl: 'app/stat/stat.component.html',
-  styleUrls: ['app/stat/stat.component.css'],
+  selector: 'playerstat',
+  templateUrl: 'app/stat/playerstat.component.html',
+  styleUrls: ['app/stat/playerstat.component.css'],
 })
 
 
 
-export class StatComponent implements OnInit {
+export class PlayerStatComponent implements OnInit {
   dayStats: Stats[];
   totalStats: Stats;
   dataLoaded: boolean = false;

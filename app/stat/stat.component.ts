@@ -20,7 +20,7 @@ export class StatComponent implements OnInit {
     dayStats: Stats[];
     totalStats: Stats;
     dataLoaded: boolean = false;
-    
+    games: number = 30;
 
     constructor(
         private _firebaseService: FirebaseService,
@@ -34,13 +34,7 @@ export class StatComponent implements OnInit {
             this._router.navigate(["Login"]);
             return;
         }
-        this._firebaseService.getAllMatches().then(matches => {
-            this._firebaseService.getAllPlayers().then(players => {
-                this.totalStats = new Stats(matches, players);
-                this.dayStats = Enumerable.From(matches).GroupBy(match => match.date).Select(group => new Stats(group.source, players)).ToArray();
-                this.dataLoaded = true;
-            })
-        });
+        this.loadStats();
     }
 
     back() {
@@ -55,4 +49,20 @@ export class StatComponent implements OnInit {
         return Object.keys(value).map(key => value[key]);
     }
 
+    loadStats(){
+        this._firebaseService.getAllMatches().then(matches => {
+            this._firebaseService.getAllPlayers().then(players => {
+                matches = this.getLastElements(matches, this.games);
+                this.totalStats = new Stats(matches, players);
+                this.dayStats = Enumerable.From(matches).GroupBy(match => match.date).Select(group => new Stats(group.source, players)).ToArray();
+                this.dataLoaded = true;
+            })
+        });
+    }
+
+    getLastElements(list: any[], games: number ) : Match[] {
+        for (var i = list.length; i < cars.length; i++) { 
+            text += cars[i] + "<br>";
+        }
+    }
 }

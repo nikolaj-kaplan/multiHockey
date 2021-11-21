@@ -5,6 +5,8 @@ import { StatComponent } from './stat/stat.component';
 import { DayComponent } from './day/day.component';
 import { MatchComponent } from './match/match.component';
 import { LoginComponent } from './login/login.component';
+import {Stat2Component} from './stat2/stat2.component';
+
 
 @Component({
   selector: 'my-app',
@@ -24,6 +26,11 @@ import { LoginComponent } from './login/login.component';
     path: '/stat',
     name: 'Stat',
     component: StatComponent
+  },
+  {
+    path: '/stat2',
+    name: 'Stat2',
+    component: Stat2Component
   },
   {
     path: '/',

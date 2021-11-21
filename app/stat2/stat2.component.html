@@ -1,0 +1,7 @@
+<label class="btn btn-default" (click)="back()">Tilbage</label>
+<hr/>
+<div *ngIf="dataLoaded">
+    <pre>
+        {{data | json}}
+    </pre>
+</div>

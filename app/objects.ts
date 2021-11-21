@@ -82,6 +82,16 @@ export class Match {
 
 }
 
+export class Team {
+    players: string[]
+    key: string
+
+    constructor(players : string[]){
+        this.players = Enumerable.From(players).OrderBy(x => x);
+        this.key = players.join("_");
+    }
+}
+
 export class Stats {
     matches: Match[];
     players: Player[];
@@ -165,5 +175,24 @@ export class Stats {
 
     transform(value: any): any {
         return Object.keys(value).map(key => value[key]);
+    }
+
+    getPlayerScore(playerName: string): number{
+        var player = this.players.filter(p => p.name == playerName)[0];
+        if(!player) return 50;
+        return player.winsPercentage;
+    }
+
+    getTeamScoreFromStats(team: string[]): number {
+        var teamKey = Enumerable.From(team).OrderBy(x => x).ToArray().join("_");
+        let totalCount = 0;
+        let winCount = 0;
+        this.matches.forEach(match => {
+           var winnerNames = this.getWinnerNames(match);
+        });
+        if(!team || team.length === 0) return 0;
+        var sum = 0;
+        team.forEach(p => sum += this.getPlayerScore(p));
+        return sum / team.length;
     }
 }

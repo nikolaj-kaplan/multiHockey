@@ -1,7 +1,6 @@
 import { Component, OnInit, } from 'angular2/core';
-import { Router } from 'angular2/router';
-import {RouteParams} from 'angular2/router';
-import { Match ,Stats} from '../objects';
+import { Router, RouteParams } from 'angular2/router';
+import { Match, Stats} from '../objects';
 import {FirebaseService} from '../data/firebase.service';
 
 @Component({
@@ -33,7 +32,6 @@ export class DayComponent implements OnInit {
             this._router.navigate(["Login"]);
             return;
         }
-        this._firebaseService;
         this.internalInit();
     }
 
@@ -182,14 +180,14 @@ export class DayComponent implements OnInit {
         return o;
     }
 
-    getPlayerScore( playerName: string){
+    getPlayerScore( playerName: string): number{
         if(!this.stats) return 0;
         var player = this.stats.players.filter(p => p.name == playerName)[0];
         if(!player) return 50;
         return player.winsPercentage;
     }
 
-    getTeamScore(team: string[]){
+    getTeamScore(team: string[]): number {
 
         if(!team || team.length === 0) return 0;
         var sum = 0;

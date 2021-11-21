@@ -1,9 +1,12 @@
 <div class="score">
-  <label style="position: fixed; margin: 0 auto; left:0; right: 0; width: 92px;" class="btn btn-default" (click)="swap()">Byt side</label>
-  <div id="left" class="c1" [ngClass]="{winner: teamLScore >= 10, looser: teamRScore >= 10}" (click)="startAddGoal(teamL)">
+  <label style="position: fixed; margin: 0 auto; left:0; right: 0; width: 92px;" class="btn btn-default"
+    (click)="swap()">Byt side</label>
+  <div id="left" class="c1" [ngClass]="{winner: teamLScore >= 10, looser: teamRScore >= 10}"
+    (click)="startAddGoal(teamL)">
     <span class="number">{{teamLScore}}</span>
   </div>
-  <div id="right" class="c2" [ngClass]="{winner: teamRScore >= 10, looser: teamLScore >= 10}" (click)="startAddGoal(teamR)">
+  <div id="right" class="c2" [ngClass]="{winner: teamRScore >= 10, looser: teamLScore >= 10}"
+    (click)="startAddGoal(teamR)">
     <span class="number">{{teamRScore}}</span>
   </div>
   <div style="clear: both;"></div>
@@ -13,10 +16,10 @@
     <label class="btn btn-default" (click)="removeLastGoal()">Fjern sidste mål</label>
     <label class="btn btn-default" (click)="deleteGame()">Slet denne kamp</label>
   </div>
-  <!-- <span style="position: fixed; margin: auto; left:0; right: 0; top:0; bottom:0; width: 70px; height: 245px; font-size: 50vw; line-height: 0;">:</span> -->
 </div>
 
-<div (click)="startAddGoal(teamL)" style="position: fixed; bottom: 0; left: 0; padding: 10px; font-size: 2.7vw; background-color: rgba(47, 70, 64, 0.5);">
+<div
+  style="position: fixed; bottom: 0; left: 0; padding: 10px; font-size: 2.7vw; background-color: rgba(47, 70, 64, 0.5);">
   <ul class="no-bullets" *ngIf="match">
     <li *ngFor="#player of teamL">
       <span>{{player}}</span>
@@ -24,7 +27,8 @@
     </li>
   </ul>
 </div>
-<div (click)="startAddGoal(teamR)" style="position: fixed; bottom: 0; right: 0; padding: 10px; font-size: 2.7vw;  background-color: rgba(47, 70, 64, 0.5);">
+<div
+  style="position: fixed; bottom: 0; right: 0; padding: 10px; font-size: 2.7vw;  background-color: rgba(47, 70, 64, 0.5);">
   <ul class="no-bullets" *ngIf="match">
     <li *ngFor="#player of teamR">
       <span>{{player}}</span>
@@ -32,23 +36,31 @@
     </li>
   </ul>
 </div>
-<div *ngIf="stateObject.state == 'addingScorer'" class="overlay">
-<span>Hvem scorede?</span>
-  <ul class="no-bullets">
-    <li (click)="addGoal(player)" *ngFor="#player of stateObject.team"><span>{{player}}</span></li>
-  </ul>
-  <div class="buttons-left">
-      <label class="btn btn-default" (click)="cancel()">Fortryd</label>
+
+<div *ngIf="stateObject.state == 'addingScorer' || stateObject.state == 'addingAssist'"
+  style="position: fixed; bottom: 0; right: 0; padding: 10px; font-size: 2.7vw; background-color: #9f9f9f; width: 100vw;">
+  <div style="color: black; font-size: 4vw;">{{stateObject.state == 'addingScorer' ? 'Målscorer?' : 'Assist?'}}</div>
+  <div class="center">
+    <div style="float:left;">
+      <ul>
+        <li class="list-group-item" (click)="toggleGoalOrAssist(player)" *ngFor="#player of stateObject.firstHalf"
+          [ngClass]="{'goal-scorer': stateObject.goalScorer == player, 'assist': stateObject.assist == player}">
+          <span>{{player}}</span>
+        </li>
+      </ul>
+    </div>
+    <div style="float:left;">
+      <ul>
+        <li class="list-group-item" (click)="toggleGoalOrAssist(player)" *ngFor="#player of stateObject.secondHalf"
+          [ngClass]="{'goal-scorer': stateObject.goalScorer == player, 'assist': stateObject.assist == player}">
+          <span>{{player}}</span>
+        </li>
+        <li class="list-group-item" [ngClass]="{'assist': stateObject.assist == 'noAssist'}"
+          (click)="toggleAssist('noAssist')"><span>Ingen assist</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="buttons-left" *ngIf="!stateObject.goalScorer && !stateObject.assist">
+    <label class="btn btn-default" (click)="cancel()">Fortryd</label>
   </div>
 </div>
-<div *ngIf="stateObject.state == 'addingAssist'" class="overlay">
-  <span>Assist?</span>
-  <ul class="no-bullets">
-    <li (click)="addAssist(player)" *ngFor="#player of stateObject.assistPlayers"><span>{{player}}</span></li>
-  </ul>
-  <div class="buttons-left">
-      <label *ngIf="stateObject.countdown >= 0">{{stateObject.countdown}}</label>
-      <label *ngIf="stateObject.countdown >= 0" class="btn btn-default" (click)="stopCounting()">Hold op med at tælle. Jeg får stress!</label>
-    <label class="btn btn-default" (click)="cancel()">Ingen assist</label>
-  </div>
-</div>  

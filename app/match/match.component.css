@@ -1,4 +1,4 @@
-.overlay{
+.overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -10,19 +10,26 @@
   background: #000000cf;
   padding: .4em;
 }
+
 .selected {
   font-weight: bold;
 }
 
 .buttons-left {
-  position: fixed; 
-  right: 1em; 
+  position: fixed;
+  right: 1em;
+  bottom: 2rem;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
 }
 
 .score .number {
-    font-size: 67vw;
-    line-height: 54vw;
-    letter-spacing: -4vw;
+  font-size: 67vw;
+  line-height: 54vw;
+  letter-spacing: -4vw;
 }
 
 .names {
@@ -30,44 +37,67 @@
 }
 
 .c1 {
-float: left; width: 50%; height: 100%; text-align:left;
+  float: left;
+  width: 50%;
+  height: 100%;
+  text-align: left;
 }
 
 .c1.winner {
-  width: 80%; height: 100%; text-align:left;
+  width: 80%;
+  height: 100%;
+  text-align: left;
 }
 
 .c1.looser {
-  width: 20%; height: 100%; text-align:left;
+  width: 20%;
+  height: 100%;
+  text-align: left;
 }
 
 
 .c2 {
-  float: right; width: 50%; height: 100%; text-align:right; padding-right: 10px;
+  float: right;
+  width: 50%;
+  height: 100%;
+  text-align: right;
+  padding-right: 10px;
 }
+
 .c2.winner {
-  width: 80%; height: 100%; text-align:right;
+  width: 80%;
+  height: 100%;
+  text-align: right;
 }
 
 .c2.looser {
-  width: 20%; text-align:right;
+  width: 20%;
+  text-align: right;
 }
 
 
-.winner{
+.winner {
   color: #8AC379
 }
 
-.looser{
+.looser {
   color: #E06C75
 }
 
 
 
-.looser > .number {
+.looser>.number {
   font-size: 20vw;
 }
 
-.winner > .number {
+.winner>.number {
   font-size: 60vw;
+}
+
+.goal-scorer {
+  background-color: darkgreen;
+}
+
+.assist {
+  background-color: darkgoldenrod
 }

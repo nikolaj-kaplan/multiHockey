@@ -52,17 +52,9 @@ export class Stat2Component implements OnInit {
     loadStats(){
         this._firebaseService.getAllMatches().then(matches => {
             this._firebaseService.getAllPlayers().then(players => {
-                matches = this.getLastElements(matches, this.games);
                 this.totalStats = new Stats(matches, players);
-                this.dayStats = Enumerable.From(matches).GroupBy(match => match.date).Select(group => new Stats(group.source, players)).ToArray();
                 this.dataLoaded = true;
             })
         });
-    }
-
-    getLastElements(list: any[], games: number ) : Match[] {
-        for (var i = list.length; i < cars.length; i++) { 
-            text += cars[i] + "<br>";
-        }
     }
 }

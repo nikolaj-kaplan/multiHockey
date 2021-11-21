@@ -35,7 +35,7 @@ export class FirebaseService {
 
     getMatchRootRef() {
         return new Firebase(this.baserUrl + this.club + "/matches");
-    };
+    }
 
 
     getAllPlayers() {

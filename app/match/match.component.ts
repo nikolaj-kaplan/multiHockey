@@ -21,7 +21,7 @@ export class MatchComponent implements OnInit {
     teamRScore: number;
     currentTeam: string[];
     swapped: boolean;
-    stateObject: any = {};
+    stateObject: StateObject = new StateObject();
 
     get teamL() {
         if (!this.match) return [];
@@ -79,31 +79,30 @@ export class MatchComponent implements OnInit {
         return this.match.goals.filter(p => p === player).length;
     }
 
-    addGoal(player) {
-        this.match.goals.push(player);
-        this._firebaseService.updateMatchGoals(this.match);
-
-        var team = this.match.team1.indexOf(player) >= 0 ? this.match.team1 : this.match.team2;
-        this.stateObject.state = "addingAssist";
-        this.stateObject.team = team;
-        this.stateObject.goalScorer = player;
-        this.stateObject.assistPlayers = Enumerable.From(this.stateObject.team).Where(x => x != player).ToArray();
-        this.stateObject.countdown = 10;
-        this.doCountdown();
+    toggleGoalOrAssist(player : string) {
+        if(!this.stateObject.goalScorer || player == this.stateObject.goalScorer) {
+            this.toggleGoal(player);
+        } else {
+            this.toggleAssist(player);
+        }
     }
 
-    doCountdown(){
-        setTimeout(() => {
-            if(!this.stateObject.countdown || this.stateObject.countdown < 0){
-                return;
-            }
-            this.stateObject.countdown--;
-            if(this.stateObject.countdown == 0) {
-                this.cancel();
-                return;
-            }
-            this.doCountdown();
-        }, 1000);
+    toggleGoal(player : string){
+        if(this.stateObject.goalScorer == player) {
+            player = null;
+        }
+
+        this.stateObject.goalScorer = player;
+
+        if(player == null) {
+            this.match.goals.pop();
+            this.stateObject.state = this.stateObject.addingScorer;
+        } else {
+            this.match.goals.push(player);
+            this.stateObject.state = this.stateObject.addingAssist;
+        }
+
+        this._firebaseService.updateMatchGoals(this.match);
     }
 
     removeLastGoal() {
@@ -139,22 +138,92 @@ export class MatchComponent implements OnInit {
     }
 
     startAddGoal(team) {
-        this.stateObject.state = "addingScorer";
-        this.stateObject.team = team;
+        this.stateObject.start(team)
     }
 
     cancel() {
-        this.stateObject = {};
+        this.stateObject.stop();
     }
 
-    addAssist(player){
-        this.match.assists.push(player);
+    toggleAssist(player){
+        if(player == "noAssist"){
+            if(this.stateObject.assist == "noAssist") {
+                this.stateObject.assist = null;
+            }
+            else {
+                this.stateObject.assist = "noAssist"
+            }
+            return;
+        }
+
+        if(this.stateObject.assist == player) {
+            this.match.assists.pop();
+            this.stateObject.assist = null;
+        }
+        else {
+            this.match.assists.push(player);
+            this.stateObject.assist = player;
+        }
         this._firebaseService.updateMatchAssists(this.match);
-        this.stateObject.countdown = -1;
-        this.cancel();
     }
 
     stopCounting(){
         this.stateObject.countdown = -1;
+    }
+}
+
+class StateObject {
+    state: string;
+    team: string[];
+    goalScorer: string;
+    assist: string;
+    countdown: number;
+
+    readonly addingScorer = "addingScorer";
+    readonly addingAssist = "addingAssist";
+
+    get firstHalf(){
+        let arr = this.team;
+        let halfwayThrough = Math.ceil((arr.length + 1) / 2)
+        return arr.slice(0, halfwayThrough);
+    }
+
+    get secondHalf(){
+        let arr = this.team;
+        let halfwayThrough = Math.ceil((arr.length + 1) / 2)
+        return arr.slice(halfwayThrough, arr.length);
+    }
+
+    start(team: string[]){
+        this.team = team;
+        this.state = this.addingScorer;
+        this.countdown = 60;
+        this.checkAutoClose();
+    }
+
+    stop() {
+        this.team = null;
+        this.state = null;
+        this.goalScorer = null;
+        this.assist = null;
+        this.countdown = null;
+    }
+
+    
+    checkAutoClose() {
+        console.log("checking", this.countdown);
+        if(this.countdown == null) return;
+
+        if(this.goalScorer && this.assist && this.countdown > 1) {
+            this.countdown = 1;
+        } else if(this.goalScorer && !this.assist && this.countdown > 10) {
+            this.countdown = 10
+        } else if(this.countdown == 0) {
+            this.stop();
+            return;
+        }
+        this.countdown--;
+        var this1 = this;
+        setTimeout(() => this1.checkAutoClose(), 1000);
     }
 }

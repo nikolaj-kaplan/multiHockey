@@ -179,8 +179,8 @@ class StateObject {
     assist: string;
     countdown: number;
 
-    readonly addingScorer = "addingScorer";
-    readonly addingAssist = "addingAssist";
+    addingScorer = "addingScorer";
+    addingAssist = "addingAssist";
 
     get firstHalf(){
         let arr = this.team;

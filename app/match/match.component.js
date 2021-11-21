@@ -188,8 +188,8 @@ System.register(['angular2/core', 'angular2/router', '../data/firebase.service']
             exports_1("MatchComponent", MatchComponent);
             StateObject = (function () {
                 function StateObject() {
-                    this.readonly = addingScorer = "addingScorer";
-                    this.readonly = addingAssist = "addingAssist";
+                    this.addingScorer = "addingScorer";
+                    this.addingAssist = "addingAssist";
                 }
                 Object.defineProperty(StateObject.prototype, "firstHalf", {
                     get: function () {

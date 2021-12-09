@@ -1,5 +1,5 @@
 {
-  "name": "angular2-quickstart",
+  "name": "multi-hockey",
   "version": "1.0.0",
   "scripts": {
     "postinstall": "npm run typings install",

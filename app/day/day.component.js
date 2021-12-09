@@ -42,6 +42,9 @@ System.register(['angular2/core', 'angular2/router', '../objects', '../data/fire
                     }
                     this.internalInit();
                 };
+                DayComponent.prototype.getInactivePlayers = function () {
+                    return this.inactivePlayers.sort();
+                };
                 DayComponent.prototype.internalInit = function () {
                     var this1 = this;
                     // setup the teams. Either based on last match (if it is today) or random

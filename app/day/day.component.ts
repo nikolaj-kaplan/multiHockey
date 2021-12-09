@@ -35,6 +35,10 @@ export class DayComponent implements OnInit {
         this.internalInit();
     }
 
+    getInactivePlayers(){
+        return this.inactivePlayers.sort();        
+    }
+
     internalInit() {
         var this1 = this;
         // setup the teams. Either based on last match (if it is today) or random
